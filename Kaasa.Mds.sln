@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32708.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaasa.Mds", "Kaasa.Mds\Kaasa.Mds.csproj", "{C72AC9C0-5F5D-471B-9C0E-A4CF876540A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaasa.Mds.NET", "Kaasa.Mds\Kaasa.Mds.NET.csproj", "{C72AC9C0-5F5D-471B-9C0E-A4CF876540A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
