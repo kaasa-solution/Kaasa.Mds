@@ -1,4 +1,5 @@
-﻿using Kaasa.Mds.iOS;
+﻿using Foundation;
+using Kaasa.Mds.iOS;
 using Kaasa.Mds.Services;
 
 namespace Kaasa.Mds.Models;
@@ -58,7 +59,7 @@ internal partial class MdsApiCall : IMdsSubscription
         var dictionary = (NSDictionary)NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
 
         if (dictionary != null) {
-            _mds.DoPut(SchemePrefix + _serial + _path, dictionary, (x) => {
+            _mds.DoPost(SchemePrefix + _serial + _path, dictionary, (x) => {
                 if (x.StatusCode == 200) {
                     _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
                 } else {

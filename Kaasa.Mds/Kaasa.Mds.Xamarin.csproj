@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
 	<PropertyGroup>        
-		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;MonoAndroid12.0;Xamarin.iOS10</TargetFrameworks>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
@@ -20,8 +20,8 @@
 		<Copyright>© 2022 Kaasa solution GmbH. – All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/kaasa-solution/Kaasa.Mds</RepositoryUrl>
 		<Owners>Kaasa</Owners>
-		<OutputPath>build/NET</OutputPath>
-		<IntermediateOutputPath>build/NET</IntermediateOutputPath>
+		<OutputPath>build/Xamarin</OutputPath>
+		<IntermediateOutputPath>build/Xamarin</IntermediateOutputPath>
 		<PackageProjectUrl>https://github.com/kaasa-solution/Kaasa.Mds</PackageProjectUrl>
 		<PackageTags>xamarin, xamarin.forms, maui, .net, android, ios, plugin</PackageTags>
 		<PackageReleaseNotes>https://github.com/kaasa-solution/Kaasa.Mds</PackageReleaseNotes>
@@ -41,13 +41,18 @@
 		<Compile Include="GlobalUsings.cs" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-android')) ">
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+		<Compile Include="**\*.netstandard.cs" />
+		<Compile Include="**\*.netstandard.*.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
 		<Compile Include="**\*.android.cs" />
 		<Compile Include="**\*.android.*.cs" />
 		<PackageReference Include="Kaasa.Mds.Android" Version="1.1.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
 		<Compile Include="**\*.ios.cs" />
 		<Compile Include="**\*.ios.*.cs" />
 		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.0" />

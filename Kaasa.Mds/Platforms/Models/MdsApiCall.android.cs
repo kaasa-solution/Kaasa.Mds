@@ -47,7 +47,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.Get(SchemePrefix + _serial + _path, null, this);
+        _mds.Delete(SchemePrefix + _serial + _path, null, this);
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
