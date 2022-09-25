@@ -4,24 +4,24 @@ namespace Kaasa.Mds.Services;
 
 public partial class MdsService : Java.Lang.Object, Android.IMdsConnectionListener
 {
-    private readonly Android.Mds _mds;
+    internal static Android.Mds? Mds { get; private set; }
 
     public MdsService()
     {
-        if (Mds.Activity == null)
+        if (Kaasa.Mds.Mds.Activity == null)
             throw new NotInitializedException();
 
-        _mds = new Android.Mds.Builder().Build(Mds.Activity)!;
+        Mds ??= new Android.Mds.Builder().Build(Kaasa.Mds.Mds.Activity)!;
     }
 
     private void PlatformConnect(Guid guid)
     {
-        _mds.Connect(Regex.Replace(guid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17), this);
+        Mds!.Connect(Regex.Replace(guid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17), this);
     }
 
     private void PlatformDisconnect(IMdsDevice mdsDevice)
     {
-        _mds.Disconnect(mdsDevice.MacAddr);
+        Mds!.Disconnect(mdsDevice.MacAddr);
     }
 
     void Android.IMdsConnectionListener.OnConnect(string? macAddr)
@@ -31,9 +31,7 @@ public partial class MdsService : Java.Lang.Object, Android.IMdsConnectionListen
 
     void Android.IMdsConnectionListener.OnConnectionComplete(string? macAddr, string? serial)
     {
-        var mdsDevice = new MdsDevice(_mds, macAddr!, serial!);
-        _mdsDevices.Add(mdsDevice);
-        OnConnectionComplete?.Invoke(this, mdsDevice);
+        OnConnectionComplete?.Invoke(this, (macAddr!, serial!));
     }
 
     void Android.IMdsConnectionListener.OnDisconnect(string? macAddr)

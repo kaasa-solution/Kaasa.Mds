@@ -1,17 +1,12 @@
-﻿using Kaasa.Mds.Models;
-
-namespace Kaasa.Mds.Services;
+﻿namespace Kaasa.Mds.Services;
 
 public partial class MdsService : IMdsService
 {
     private readonly List<MdsDevice> _mdsDevices = new();
 
-    private TaskCompletionSource<IMdsDevice>? _connectTcs;
-    private TaskCompletionSource<object?>? _disconnectTcs;
-
     public event EventHandler<string>? OnConnect;
 
-    public event EventHandler<IMdsDevice>? OnConnectionComplete;
+    public event EventHandler<(string macAddr, string serial)>? OnConnectionComplete;
 
     public event EventHandler<string>? OnDisconnect;
 
@@ -19,14 +14,16 @@ public partial class MdsService : IMdsService
 
     public async Task<IMdsDevice> ConnectAsync(Guid guid)
     {
-        _connectTcs = new();
+        var connectTcs = new TaskCompletionSource<IMdsDevice>();
 
-        void onConnectionComplete(object? sender, IMdsDevice mdsDevice)
+        void onConnectionComplete(object? sender, (string macAddr, string serial) args)
         {
             OnConnectionComplete -= onConnectionComplete;
             OnError -= onError;
 
-            _connectTcs.SetResult(mdsDevice);
+            var mdsDevice = new MdsDevice(args.macAddr, args.serial);
+            _mdsDevices.Add(mdsDevice);
+            connectTcs.SetResult(mdsDevice);
         }
 
         void onError(object? sender, MdsException exception)
@@ -34,7 +31,7 @@ public partial class MdsService : IMdsService
             OnConnectionComplete -= onConnectionComplete;
             OnError -= onError;
 
-            _connectTcs.SetException(exception);
+            connectTcs.SetException(exception);
         }
 
         OnConnectionComplete += onConnectionComplete;
@@ -42,7 +39,7 @@ public partial class MdsService : IMdsService
 
         PlatformConnect(guid);
 
-        return await _connectTcs.Task.ConfigureAwait(false);
+        return await connectTcs.Task.ConfigureAwait(false);
     }
 
     public async Task DisconnectAsync(IMdsDevice mdsDevice)
@@ -52,7 +49,7 @@ public partial class MdsService : IMdsService
         if (device == null)
             return;
 
-        _disconnectTcs = new();
+        var disconnectTcs = new TaskCompletionSource<object?>();
 
         void onDisconnect(object? sender, string macAddr)
         {
@@ -60,7 +57,7 @@ public partial class MdsService : IMdsService
             OnError -= onError;
 
             _mdsDevices.Remove(device);
-            _disconnectTcs.SetResult(null);
+            disconnectTcs.SetResult(null);
         }
 
         void onError(object? sender, MdsException exception)
@@ -68,7 +65,7 @@ public partial class MdsService : IMdsService
             OnDisconnect -= onDisconnect;
             OnError -= onError;
 
-            _disconnectTcs.SetException(exception);
+            disconnectTcs.SetException(exception);
         }
 
         OnDisconnect += onDisconnect;
@@ -76,6 +73,6 @@ public partial class MdsService : IMdsService
 
         PlatformDisconnect(device);
 
-        await _disconnectTcs.Task.ConfigureAwait(false);
+        await disconnectTcs.Task.ConfigureAwait(false);
     }
 }

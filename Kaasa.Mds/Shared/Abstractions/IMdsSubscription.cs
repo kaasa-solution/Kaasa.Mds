@@ -2,5 +2,8 @@
 
 public interface IMdsSubscription
 {
+    /// <summary>
+    /// Unsubscribe notifications.
+    /// </summary>
     void Unsubscribe();
 }

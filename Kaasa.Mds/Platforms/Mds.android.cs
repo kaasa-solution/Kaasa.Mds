@@ -4,7 +4,7 @@ using Android.App;
 
 namespace Kaasa.Mds;
 
-public partial class Mds
+public static partial class Mds
 {
     internal static Activity? Activity { get; private set; }
 

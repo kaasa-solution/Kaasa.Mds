@@ -1,18 +1,14 @@
-﻿#if !NET6_0_OR_GREATER
-using Foundation;
-#endif
-
-using Kaasa.Mds.iOS;
+﻿using Kaasa.Mds.iOS;
 
 namespace Kaasa.Mds.Services;
 
 public partial class MdsService : MDSConnectivityServiceDelegate
 {
-    private readonly MDSWrapper _mds = new();
+    internal static MDSWrapper Mds { get; } = new();
 
     public MdsService()
     {
-        _mds.DoSubscribe("MDS/ConnectedDevices", new NSDictionary(), _ => { }, (@event) => {
+        Mds.DoSubscribe("MDS/ConnectedDevices", new NSDictionary(), _ => { }, (@event) => {
             if (@event.BodyDictionary == null)
                 return;
 
@@ -24,11 +20,9 @@ public partial class MdsService : MDSConnectivityServiceDelegate
                 var connection = (NSDictionary)body.ValueForKey(new NSString("Connection"));
                 var uuid = ((NSString)connection.ValueForKey(new NSString("UUID"))).ToString();
                 // TODO CHECK FOR MACADRESS
-                var mdsDevice = new MdsDevice(_mds, uuid, serial);
-                _mdsDevices.Add(mdsDevice);
 
                 OnConnect?.Invoke(this, uuid);
-                OnConnectionComplete?.Invoke(this, mdsDevice);
+                OnConnectionComplete?.Invoke(this, (uuid, serial));
             } else if (method == new NSString("DEL")) {
                 var body = (NSDictionary)@event.BodyDictionary.ValueForKey(new NSString("Body"));
                 var serial = ((NSString)body.ValueForKey(new NSString("Serial"))).ToString();
@@ -43,7 +37,7 @@ public partial class MdsService : MDSConnectivityServiceDelegate
         var uuid = new NSUuid(guid.ToString());
 
         if(uuid != null)
-            _mds.ConnectPeripheralWithUUID(uuid);
+            Mds.ConnectPeripheralWithUUID(uuid);
     }
 
     private void PlatformDisconnect(IMdsDevice mdsDevice)
@@ -51,7 +45,7 @@ public partial class MdsService : MDSConnectivityServiceDelegate
         var uuid = new NSUuid(mdsDevice.MacAddr);
 
         if (uuid != null)
-            _mds.DisconnectPeripheralWithUUID(uuid);
+            Mds.DisconnectPeripheralWithUUID(uuid);
     }
 
     public override void DidFailToConnectWithError(NSError? error)
