@@ -36,7 +36,7 @@ public partial class MdsService : MDSConnectivityServiceDelegate
     {
         var uuid = new NSUuid(guid.ToString());
 
-        if(uuid != null)
+        if (uuid != null)
             Mds.ConnectPeripheralWithUUID(uuid);
     }
 
