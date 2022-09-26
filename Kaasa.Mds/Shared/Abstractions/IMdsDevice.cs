@@ -3,14 +3,19 @@
 public interface IMdsDevice
 {
     /// <summary>
-    /// MAC-Address of the device.
+    /// UUID of the device.
     /// </summary>
-    string MacAddr { get; }
+    Guid UUID { get; }
 
     /// <summary>
     /// Serial of the device.
     /// </summary>
     string Serial { get; }
+
+    /// <summary>
+    /// MAC-Address of the device.
+    /// </summary>
+    string MacAddr { get; }
 
     /// <summary>
     /// Get a resource.

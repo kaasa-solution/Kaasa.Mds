@@ -2,77 +2,32 @@
 
 public partial class MdsService : IMdsService
 {
-    private readonly List<MdsDevice> _mdsDevices = new();
+    internal List<MdsDevice> MdsDevices { get; } = new();
 
     public event EventHandler<string>? OnConnect;
 
-    public event EventHandler<(string macAddr, string serial)>? OnConnectionComplete;
+    public event EventHandler<(Guid uuid, string serial)>? OnConnectionComplete;
 
-    public event EventHandler<string>? OnDisconnect;
+    public event EventHandler<(Guid uuid, string serial)>? OnDisconnect;
 
     public event EventHandler<MdsException>? OnError;
 
-    public async Task<IMdsDevice> ConnectAsync(Guid guid)
-    {
-        var connectTcs = new TaskCompletionSource<IMdsDevice>();
+    public async Task<IMdsDevice> ConnectAsync(Guid uuid) {
+        var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
 
-        void onConnectionComplete(object? sender, (string macAddr, string serial) args)
-        {
-            OnConnectionComplete -= onConnectionComplete;
-            OnError -= onError;
+        if (device != null)
+            return device;
 
-            var mdsDevice = new MdsDevice(args.macAddr, args.serial);
-            _mdsDevices.Add(mdsDevice);
-            connectTcs.SetResult(mdsDevice);
-        }
-
-        void onError(object? sender, MdsException exception)
-        {
-            OnConnectionComplete -= onConnectionComplete;
-            OnError -= onError;
-
-            connectTcs.SetException(exception);
-        }
-
-        OnConnectionComplete += onConnectionComplete;
-        OnError += onError;
-
-        PlatformConnect(guid);
-
-        return await connectTcs.Task.ConfigureAwait(false);
+        return await new MdsConnectionCall(this).ConnectAsync(uuid);
     }
 
     public async Task DisconnectAsync(IMdsDevice mdsDevice)
     {
-        var device = _mdsDevices.FirstOrDefault(x => x.Serial == mdsDevice.Serial);
+        var device = MdsDevices.FirstOrDefault(x => x.UUID == mdsDevice.UUID);
 
         if (device == null)
             return;
 
-        var disconnectTcs = new TaskCompletionSource<object?>();
-
-        void onDisconnect(object? sender, string macAddr)
-        {
-            OnDisconnect -= onDisconnect;
-            OnError -= onError;
-
-            _mdsDevices.Remove(device);
-            disconnectTcs.SetResult(null);
-        }
-
-        void onError(object? sender, MdsException exception)
-        {
-            OnDisconnect -= onDisconnect;
-            OnError -= onError;
-
-            disconnectTcs.SetException(exception);
-        }
-
-        OnDisconnect += onDisconnect;
-        OnError += onError;
-
-        PlatformDisconnect(device);
-
-        await disconnectTcs.Task.ConfigureAwait(false);
+        await new MdsConnectionCall(this).DisconnectAsync(device);
     }
 }

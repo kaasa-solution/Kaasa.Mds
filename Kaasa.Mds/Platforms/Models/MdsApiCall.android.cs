@@ -1,17 +1,13 @@
 ﻿using Kaasa.Mds.Android;
-using Kaasa.Mds.Services;
 
 namespace Kaasa.Mds.Models;
 
 internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMdsNotificationListener, Abstractions.IMdsSubscription
 {
-    private readonly Android.Mds _mds;
-    private Action<string>? _notificationCallback;
     private Android.IMdsSubscription? _mdsSubscription;
 
     public MdsApiCall(string serial, string path)
     {
-        _mds = MdsService.Mds!;
         _serial = serial;
         _path = path;
     }
@@ -20,7 +16,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.Get(SchemePrefix + _serial + _path, null, this);
+        Mds.Current.Get(SchemePrefix + _serial + _path, null, this);
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
@@ -29,7 +25,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.Put(SchemePrefix + _serial + _path, contract, this);
+        Mds.Current.Put(SchemePrefix + _serial + _path, contract, this);
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
@@ -38,7 +34,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.Post(SchemePrefix + _serial + _path, contract, this);
+        Mds.Current.Post(SchemePrefix + _serial + _path, contract, this);
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
@@ -47,7 +43,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.Delete(SchemePrefix + _serial + _path, null, this);
+        Mds.Current.Delete(SchemePrefix + _serial + _path, null, this);
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
@@ -66,7 +62,7 @@ internal partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener, IMds
             subscribtionPath = _path;
         }
 
-        _mdsSubscription = _mds.Subscribe("suunto://MDS/EventListener", "{\"Uri\": \"" + _serial + "/" + subscribtionPath + "\"}", this);
+        _mdsSubscription = Mds.Current.Subscribe("suunto://MDS/EventListener", "{\"Uri\": \"" + _serial + "/" + subscribtionPath + "\"}", this);
 
         return (await _tcs.Task.ConfigureAwait(false) as Abstractions.IMdsSubscription)!;
     }

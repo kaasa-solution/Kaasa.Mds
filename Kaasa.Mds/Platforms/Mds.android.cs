@@ -1,12 +1,24 @@
-﻿#if !NET6_0_OR_GREATER
-using Android.App;
-#endif
+﻿using Android.App;
 
 namespace Kaasa.Mds;
 
 public static partial class Mds
 {
-    internal static Activity? Activity { get; private set; }
+    private static readonly Lazy<Android.Mds> _current = new(() => new Android.Mds.Builder().Build(Activity)!, true);
+    internal static Android.Mds Current => _current.Value;
+
+    private static Activity? _activity;
+    private static Activity? Activity {
+        get {
+            if (_activity == null)
+                throw new NotInitializedException();
+
+            return _activity;
+        }
+        set {
+            _activity = value;
+        }
+    }
 
     public static void Init(Activity activity)
     {

@@ -1,14 +1,16 @@
 ﻿namespace Kaasa.Mds.Models;
 
-internal partial class MdsDevice : IMdsDevice
+internal class MdsDevice : IMdsDevice
 {
-    public string MacAddr { get; }
+    public Guid UUID { get; }
     public string Serial { get; }
+    public string MacAddr { get; }
 
-    public MdsDevice(string macAddr, string serial)
+    public MdsDevice(Guid uuid, string serial, string macAddr)
     {
-        MacAddr = macAddr;
+        UUID = uuid;
         Serial = serial;
+        MacAddr = macAddr;
     }
 
     public async Task<string?> GetAsync(string path) =>

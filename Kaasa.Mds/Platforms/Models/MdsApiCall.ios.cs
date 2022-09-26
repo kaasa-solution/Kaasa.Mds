@@ -1,17 +1,10 @@
 ﻿using Foundation;
-using Kaasa.Mds.iOS;
-using Kaasa.Mds.Services;
-
 namespace Kaasa.Mds.Models;
 
 internal partial class MdsApiCall : IMdsSubscription
 {
-    private readonly MDSWrapper _mds;
-    private Action<string>? _notificationCallback;
-
     public MdsApiCall(string serial, string path)
     {
-        _mds = MdsService.Mds;
         _serial = serial;
         _path = path;
     }
@@ -20,7 +13,7 @@ internal partial class MdsApiCall : IMdsSubscription
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.DoGet(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
+        Mds.Current.DoGet(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
                 _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
             } else {
@@ -38,9 +31,9 @@ internal partial class MdsApiCall : IMdsSubscription
         var dictionary = (NSDictionary)NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
 
         if (dictionary != null) {
-            _mds.DoPut(SchemePrefix + _serial + _path, dictionary, (x) => {
+            Mds.Current.DoPut(SchemePrefix + _serial + _path, dictionary, (x) => {
                 if (x.StatusCode == 200) {
-                    _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
+                    _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
                 } else {
                     _tcs.SetException(new MdsException(x.Description));
                 }
@@ -56,19 +49,18 @@ internal partial class MdsApiCall : IMdsSubscription
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        var dictionary = (NSDictionary)NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
+        var dictionary = new NSDictionary();
 
-        if (dictionary != null) {
-            _mds.DoPost(SchemePrefix + _serial + _path, dictionary, (x) => {
-                if (x.StatusCode == 200) {
-                    _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
-                } else {
-                    _tcs.SetException(new MdsException(x.Description));
-                }
-            });
-        } else {
-            _tcs.SetException(new MdsException(error.Description));
-        }
+        if(!string.IsNullOrWhiteSpace(contract))
+            dictionary = (NSDictionary)NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
+
+        Mds.Current.DoPost(SchemePrefix + _serial + _path, dictionary, (x) => {
+            if (x.StatusCode == 200 || x.StatusCode == 201) {
+                _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
+            } else {
+                _tcs.SetException(new MdsException(x.Description));
+            }
+        });
 
         return await _tcs.Task.ConfigureAwait(false) as string;
     }
@@ -77,9 +69,9 @@ internal partial class MdsApiCall : IMdsSubscription
     {
         _tcs = new TaskCompletionSource<object?>();
 
-        _mds.DoDelete(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
+        Mds.Current.DoDelete(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
-                _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
+                _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
             } else {
                 _tcs.SetException(new MdsException(x.Description));
             }
@@ -94,14 +86,14 @@ internal partial class MdsApiCall : IMdsSubscription
 
         _notificationCallback = notificationCallback;
 
-        _mds.DoSubscribe(_path, new NSDictionary(), (x) => {
+        Mds.Current.DoSubscribe(_serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
                 _tcs?.SetResult(this);
             } else {
                 _tcs?.SetException(new MdsException(x.Description));
             }
         }, (x) => {
-            _notificationCallback?.Invoke(new NSString(x.BodyData, NSStringEncoding.UTF8));
+            _notificationCallback?.Invoke(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
         });
 
         return (await _tcs.Task.ConfigureAwait(false) as IMdsSubscription)!;
@@ -109,6 +101,6 @@ internal partial class MdsApiCall : IMdsSubscription
 
     public void Unsubscribe()
     {
-        _mds.DoUnsubscribe(_path);
+        Mds.Current.DoUnsubscribe(_serial + _path);
     }
 }
