@@ -31,4 +31,34 @@ public partial class MdsService : IMdsService
 
         await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
     }
+
+    public async Task DisconnectAsync(Guid uuid)
+    {
+        var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
+
+        if (device == null)
+            return;
+
+        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
+    }
+
+    public async Task DisconnectAsync(string serial)
+    {
+        var device = MdsDevices.FirstOrDefault(x => x.Serial == serial);
+
+        if (device == null)
+            return;
+
+        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
+    }
+
+    public IMdsDevice? GetConnectedSensor(Guid uuid)
+    {
+        return MdsDevices.FirstOrDefault(x => x.UUID == uuid);
+    }
+
+    public IMdsDevice? GetConnectedSensor(string serial)
+    {
+        return MdsDevices.FirstOrDefault(x => x.Serial == serial);
+    }
 }
