@@ -26,7 +26,7 @@ public interface IMdsService
     /// <summary>
     /// Connect to a device.
     /// </summary>
-    /// <param name="guid">UUID of the device to be connected</param>
+    /// <param name="uuid">UUID of the device to be connected</param>
     /// <returns>Returns the connected <see cref="IMdsDevice"/> on success</returns>
     /// <exception cref="MdsException">Thrown when an error occurs</exception>
     Task<IMdsDevice> ConnectAsync(Guid uuid);
