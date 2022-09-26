@@ -19,7 +19,7 @@ public partial class MdsService : IMdsService
         if (device != null)
             return device;
 
-        return await new MdsConnectionCall(this).ConnectAsync(uuid);
+        return await new MdsConnectionCall(this).ConnectAsync(uuid).ConfigureAwait(false);
     }
 
     public async Task DisconnectAsync(IMdsDevice mdsDevice)
@@ -29,6 +29,6 @@ public partial class MdsService : IMdsService
         if (device == null)
             return;
 
-        await new MdsConnectionCall(this).DisconnectAsync(device);
+        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
     }
 }
