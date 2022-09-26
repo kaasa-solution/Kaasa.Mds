@@ -7,5 +7,4 @@ internal partial class MdsApiCall
     private readonly string _path;
     private TaskCompletionSource<object?>? _tcs;
     private Action<string>? _notificationCallback;
-
 }

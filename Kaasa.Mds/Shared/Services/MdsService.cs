@@ -12,7 +12,8 @@ public partial class MdsService : IMdsService
 
     public event EventHandler<MdsException>? OnError;
 
-    public async Task<IMdsDevice> ConnectAsync(Guid uuid) {
+    public async Task<IMdsDevice> ConnectAsync(Guid uuid)
+    {
         var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
 
         if (device != null)

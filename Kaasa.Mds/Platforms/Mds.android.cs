@@ -1,6 +1,6 @@
 ﻿using Android.App;
 
-namespace Kaasa.Mds;
+﻿namespace Kaasa.Mds;
 
 public static partial class Mds
 {
@@ -8,6 +8,7 @@ public static partial class Mds
     internal static Android.Mds Current => _current.Value;
 
     private static Activity? _activity;
+
     private static Activity? Activity {
         get {
             if (_activity == null)
