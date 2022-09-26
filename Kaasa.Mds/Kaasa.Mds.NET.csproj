@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>        
-		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
+		<TargetFrameworks>net6.0-ios</TargetFrameworks>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
@@ -50,6 +50,6 @@
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
 		<Compile Include="**\*.ios.cs" />
 		<Compile Include="**\*.ios.*.cs" />
-		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.0" />
+		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.1" />
 	</ItemGroup>
 </Project>

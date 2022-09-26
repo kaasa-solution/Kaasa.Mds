@@ -46,16 +46,7 @@ internal partial class MdsConnectionCall
         _mdsService.OnConnectionComplete += onConnectionComplete;
         _mdsService.OnError += onError;
 
-        var nsuuid = new NSUuid(uuid.ToString());
-
-        // Fix for the ios connection bug
-        var source = new CancellationTokenSource();
-        _ = Task.Run(() => Mds.Current.ConnectPeripheralWithUUID(nsuuid), source.Token);
-        await Task.Delay(TimeSpan.FromSeconds(0.2));
-        source.Cancel();
-        source.Dispose();
-        await Task.Delay(TimeSpan.FromSeconds(0.2));
-        Mds.Current.ConnectPeripheralWithUUID(nsuuid);
+        Mds.Current.ConnectPeripheralWithUUID(new NSUuid(uuid.ToString()));
 
         return (await _tcs.Task.ConfigureAwait(false) as IMdsDevice)!;
     }

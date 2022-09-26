@@ -15,7 +15,7 @@ internal partial class MdsApiCall : IMdsSubscription
 
         Mds.Current.DoGet(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
-                _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8));
+                _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
             } else {
                 _tcs.SetException(new MdsException(x.Description));
             }

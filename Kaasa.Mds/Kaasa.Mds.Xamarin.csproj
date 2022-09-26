@@ -55,6 +55,6 @@
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
 		<Compile Include="**\*.ios.cs" />
 		<Compile Include="**\*.ios.*.cs" />
-		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.0" />
+		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.1" />
 	</ItemGroup>
 </Project>
