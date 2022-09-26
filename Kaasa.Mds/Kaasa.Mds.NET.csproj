@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>        
-		<TargetFrameworks>net6.0-ios</TargetFrameworks>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
