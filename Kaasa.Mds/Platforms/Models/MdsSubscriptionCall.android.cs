@@ -8,14 +8,7 @@ internal sealed partial class MdsSubscriptionCall : Java.Lang.Object, IMdsNotifi
 
     public async Task<Abstractions.IMdsSubscription> SubscribeAsync()
     {
-        string subscribtionPath;
-
-        if (_path.Substring(0, 1) == "/") {
-            subscribtionPath = _path.Remove(0, 1);
-        } else {
-            subscribtionPath = _path;
-        }
-
+        var subscribtionPath = _path[..1] == "/" ? _path.Remove(0, 1) : _path;
         _mdsSubscription = Mds.Current.Subscribe(SchemePrefix, "{\"Uri\": \"" + _serial + "/" + subscribtionPath + "\"}", this);
 
         return await _tcs.Task.ConfigureAwait(false);

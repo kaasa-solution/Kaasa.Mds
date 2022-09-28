@@ -1,6 +1,4 @@
-﻿using Kaasa.Mds.Services;
-
-namespace Kaasa.Mds.Models;
+﻿namespace Kaasa.Mds.Models;
 
 internal sealed partial class MdsConnectionCall
 {
