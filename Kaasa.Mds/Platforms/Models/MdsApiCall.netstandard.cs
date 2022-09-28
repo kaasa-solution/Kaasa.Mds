@@ -1,12 +1,7 @@
 ﻿namespace Kaasa.Mds.Models;
 
-internal partial class MdsApiCall
+internal sealed partial class MdsApiCall
 {
-    public MdsApiCall(string serial, string path)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<string?> GetAsync()
     {
         throw new NotImplementedException();
@@ -23,11 +18,6 @@ internal partial class MdsApiCall
     }
 
     public Task<string?> DeleteAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IMdsSubscription> SubscribeAsync(Action<string> notificationCallback)
     {
         throw new NotImplementedException();
     }

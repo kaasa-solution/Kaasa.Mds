@@ -2,7 +2,7 @@
 
 namespace Kaasa.Mds.Services;
 
-public partial class MdsService : Java.Lang.Object, IMdsConnectionListener
+public sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListener
 {
     void IMdsConnectionListener.OnConnect(string? macAddr)
     {

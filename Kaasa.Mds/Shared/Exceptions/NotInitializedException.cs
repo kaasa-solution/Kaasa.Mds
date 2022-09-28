@@ -1,5 +1,5 @@
 ﻿namespace Kaasa.Mds.Exceptions;
 
-public class NotInitializedException : Exception
+public sealed class NotInitializedException : Exception
 {
 }

@@ -18,6 +18,12 @@ public interface IMdsDevice
     string MacAddr { get; }
 
     /// <summary>
+    /// Disconnect the device.
+    /// </summary>
+    /// <exception cref="MdsException">Thrown when an error occurs</exception>
+    Task DisconnectAsync();
+
+    /// <summary>
     /// Get a resource.
     /// </summary>
     /// <param name="path">Resources path</param>

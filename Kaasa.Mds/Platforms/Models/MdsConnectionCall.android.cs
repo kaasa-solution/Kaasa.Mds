@@ -1,19 +1,11 @@
-﻿using Kaasa.Mds.Services;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Kaasa.Mds.Models;
 
-internal partial class MdsConnectionCall : Java.Lang.Object
+internal sealed partial class MdsConnectionCall : Java.Lang.Object
 {
-    public MdsConnectionCall(MdsService mdsService)
-    {
-        _mdsService = mdsService;
-    }
-
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
-        _tcs = new TaskCompletionSource<object?>();
-
         var macAddr = Regex.Replace(uuid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17);
 
         void onConnectionComplete(object? sender, (Guid uuid, string serial) e)
@@ -21,7 +13,7 @@ internal partial class MdsConnectionCall : Java.Lang.Object
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
 
-            var device = new MdsDevice(e.uuid, e.serial, macAddr);
+            var device = new MdsDevice(_mdsService, e.uuid, e.serial, macAddr);
 
             _mdsService.MdsDevices.Add(device);
             _tcs.SetResult(device);
@@ -45,8 +37,6 @@ internal partial class MdsConnectionCall : Java.Lang.Object
 
     public async Task DisconnectAsync(MdsDevice mdsDevice)
     {
-        var _tcs = new TaskCompletionSource<object?>();
-
         void onDisconnect(object? sender, (Guid uuid, string serial) e)
         {
             _mdsService.OnDisconnect -= onDisconnect;

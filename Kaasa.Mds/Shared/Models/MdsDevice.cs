@@ -1,17 +1,23 @@
 ﻿namespace Kaasa.Mds.Models;
 
-internal class MdsDevice : IMdsDevice
+internal sealed class MdsDevice : IMdsDevice
 {
+    private readonly MdsService _mdsService;
+
     public Guid UUID { get; }
     public string Serial { get; }
     public string MacAddr { get; }
 
-    public MdsDevice(Guid uuid, string serial, string macAddr)
+    public MdsDevice(MdsService mdsService, Guid uuid, string serial, string macAddr)
     {
+        _mdsService = mdsService;
         UUID = uuid;
         Serial = serial;
         MacAddr = macAddr;
     }
+
+    public async Task DisconnectAsync() =>
+        await new MdsConnectionCall(_mdsService).DisconnectAsync(this);
 
     public async Task<string?> GetAsync(string path) =>
         await new MdsApiCall(Serial, path).GetAsync().ConfigureAwait(false);
@@ -26,5 +32,5 @@ internal class MdsDevice : IMdsDevice
         await new MdsApiCall(Serial, path).DeleteAsync().ConfigureAwait(false);
 
     public async Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback) =>
-        await new MdsApiCall(Serial, path).SubscribeAsync(notificationCallback).ConfigureAwait(false);
+        await new MdsSubscriptionCall(Serial, path, notificationCallback).SubscribeAsync().ConfigureAwait(false);
 }

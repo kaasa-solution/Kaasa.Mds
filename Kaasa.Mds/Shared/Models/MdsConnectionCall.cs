@@ -2,8 +2,13 @@
 
 namespace Kaasa.Mds.Models;
 
-internal partial class MdsConnectionCall
+internal sealed partial class MdsConnectionCall
 {
+    private readonly TaskCompletionSource<object?> _tcs = new();
     private readonly MdsService _mdsService;
-    private TaskCompletionSource<object?>? _tcs;
+
+    public MdsConnectionCall(MdsService mdsService)
+    {
+        _mdsService = mdsService;
+    }
 }

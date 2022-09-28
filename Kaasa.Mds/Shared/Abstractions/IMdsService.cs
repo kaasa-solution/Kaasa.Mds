@@ -32,27 +32,6 @@ public interface IMdsService
     Task<IMdsDevice> ConnectAsync(Guid uuid);
 
     /// <summary>
-    /// Disconnect a device.
-    /// </summary>
-    /// <param name="mdsDevice">Device to disconnect</param>
-    /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task DisconnectAsync(IMdsDevice mdsDevice);
-
-    /// <summary>
-    /// Disconnect a device.
-    /// </summary>
-    /// <param name="uuid">Uuid of the device to disconnect</param>
-    /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task DisconnectAsync(Guid uuid);
-
-    /// <summary>
-    /// Disconnect a device.
-    /// </summary>
-    /// <param name="serial">Serial of the device to disconnect</param>
-    /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task DisconnectAsync(string serial);
-
-    /// <summary>
     /// Get a already connected device by its uuid.
     /// Returns null if no matching device is found.
     /// </summary>

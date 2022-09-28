@@ -1,19 +1,11 @@
 ﻿using Foundation;
-using Kaasa.Mds.Services;
 
 namespace Kaasa.Mds.Models;
 
-internal partial class MdsConnectionCall
+internal sealed partial class MdsConnectionCall
 {
-    public MdsConnectionCall(MdsService mdsService)
-    {
-        _mdsService = mdsService;
-    }
-
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
-        _tcs = new TaskCompletionSource<object?>();
-
         string? macAddr = null;
 
         void onConnect(object? sender, string? _macAddr)
@@ -27,7 +19,7 @@ internal partial class MdsConnectionCall
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
 
-            var device = new MdsDevice(e.uuid, e.serial, macAddr ?? string.Empty);
+            var device = new MdsDevice(_mdsService, e.uuid, e.serial, macAddr ?? string.Empty);
 
             _mdsService.MdsDevices.Add(device);
             _tcs.SetResult(device);
@@ -53,8 +45,6 @@ internal partial class MdsConnectionCall
 
     public async Task DisconnectAsync(MdsDevice mdsDevice)
     {
-        var _tcs = new TaskCompletionSource<object?>();
-
         void onDisconnect(object? sender, (Guid uuid, string serial) e)
         {
             _mdsService.OnDisconnect -= onDisconnect;

@@ -1,6 +1,6 @@
 ﻿namespace Kaasa.Mds.Services;
 
-public partial class MdsService : IMdsService
+public sealed partial class MdsService : IMdsService
 {
     internal List<MdsDevice> MdsDevices { get; } = new();
 
@@ -20,36 +20,6 @@ public partial class MdsService : IMdsService
             return device;
 
         return await new MdsConnectionCall(this).ConnectAsync(uuid).ConfigureAwait(false);
-    }
-
-    public async Task DisconnectAsync(IMdsDevice mdsDevice)
-    {
-        var device = MdsDevices.FirstOrDefault(x => x.UUID == mdsDevice.UUID);
-
-        if (device == null)
-            return;
-
-        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
-    }
-
-    public async Task DisconnectAsync(Guid uuid)
-    {
-        var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
-
-        if (device == null)
-            return;
-
-        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
-    }
-
-    public async Task DisconnectAsync(string serial)
-    {
-        var device = MdsDevices.FirstOrDefault(x => x.Serial == serial);
-
-        if (device == null)
-            return;
-
-        await new MdsConnectionCall(this).DisconnectAsync(device).ConfigureAwait(false);
     }
 
     public IMdsDevice? GetConnectedSensor(Guid uuid)

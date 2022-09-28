@@ -3,7 +3,7 @@
 
 namespace Kaasa.Mds.Services;
 
-public partial class MdsService : MDSConnectivityServiceDelegate
+public sealed partial class MdsService : MDSConnectivityServiceDelegate
 {
     public MdsService()
     {
