@@ -7,6 +7,8 @@ public sealed partial class MdsService : MDSConnectivityServiceDelegate
 {
     public MdsService()
     {
+        OnConnectionComplete += MdsServiceOnConnectionComplete;
+
         Mds.Current.DoSubscribe("MDS/ConnectedDevices", new NSDictionary(), _ => { }, (@event) => {
             if (@event.BodyDictionary == null)
                 return;

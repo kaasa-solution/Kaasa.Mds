@@ -31,4 +31,14 @@ public sealed partial class MdsService : IMdsService
     {
         return MdsDevices.FirstOrDefault(x => x.Serial == serial);
     }
+
+    private void MdsServiceOnConnectionComplete(object? sender, (Guid uuid, string serial) e)
+    {
+        var device = MdsDevices.FirstOrDefault(x => x.Serial == e.serial);
+
+        if (device is null)
+            return;
+
+        device.MdsSubscriptionCalls.ForEach(async x => await x.SubscribeAsync().ConfigureAwait(false));
+    }
 }

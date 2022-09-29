@@ -4,6 +4,11 @@ namespace Kaasa.Mds.Services;
 
 public sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListener
 {
+    public MdsService()
+    {
+        OnConnectionComplete += MdsServiceOnConnectionComplete;
+    }
+
     void IMdsConnectionListener.OnConnect(string? macAddr)
     {
         OnConnect?.Invoke(this, macAddr!);

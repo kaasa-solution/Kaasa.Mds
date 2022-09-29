@@ -4,6 +4,8 @@ internal sealed class MdsDevice : IMdsDevice
 {
     private readonly MdsService _mdsService;
 
+    internal List<MdsSubscriptionCall> MdsSubscriptionCalls { get; } = new();
+
     public Guid UUID { get; }
     public string Serial { get; }
     public string MacAddr { get; }
@@ -17,7 +19,7 @@ internal sealed class MdsDevice : IMdsDevice
     }
 
     public async Task DisconnectAsync() =>
-        await new MdsConnectionCall(_mdsService).DisconnectAsync(this);
+        await new MdsConnectionCall(_mdsService).DisconnectAsync(this).ConfigureAwait(false);
 
     public async Task<string?> GetAsync(string path) =>
         await new MdsApiCall(Serial, path).GetAsync().ConfigureAwait(false);
@@ -31,6 +33,13 @@ internal sealed class MdsDevice : IMdsDevice
     public async Task<string?> DeleteAsync(string path) =>
         await new MdsApiCall(Serial, path).DeleteAsync().ConfigureAwait(false);
 
-    public async Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback) =>
-        await new MdsSubscriptionCall(Serial, path, notificationCallback).SubscribeAsync().ConfigureAwait(false);
+    public async Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback, bool resubscribe = true)
+    {
+        var subscriptionCall = new MdsSubscriptionCall(this, path, notificationCallback);
+
+        if(resubscribe)
+            MdsSubscriptionCalls.Add(subscriptionCall);
+
+        return await subscriptionCall.SubscribeAsync().ConfigureAwait(false);
+    }
 }

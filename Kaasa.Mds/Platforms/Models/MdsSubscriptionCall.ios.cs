@@ -6,7 +6,9 @@ internal sealed partial class MdsSubscriptionCall
 {
     public async Task<IMdsSubscription> SubscribeAsync()
     {
-        Mds.Current.DoSubscribe(_serial + _path, new NSDictionary(), (x) => {
+        _tcs = new();
+
+        Mds.Current.DoSubscribe(MdsDevice.Serial + Path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
                 _tcs?.SetResult(this);
             } else {
@@ -21,6 +23,7 @@ internal sealed partial class MdsSubscriptionCall
 
     public void Unsubscribe()
     {
-        Mds.Current.DoUnsubscribe(_serial + _path);
+        Mds.Current.DoUnsubscribe(MdsDevice.Serial + Path);
+        ((MdsDevice)MdsDevice).MdsSubscriptionCalls.Remove(this);
     }
 }

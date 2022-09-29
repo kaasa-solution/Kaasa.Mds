@@ -8,8 +8,10 @@ internal sealed partial class MdsSubscriptionCall : Java.Lang.Object, IMdsNotifi
 
     public async Task<Abstractions.IMdsSubscription> SubscribeAsync()
     {
-        var subscribtionPath = _path[..1] == "/" ? _path.Remove(0, 1) : _path;
-        _mdsSubscription = Mds.Current.Subscribe(SchemePrefix, "{\"Uri\": \"" + _serial + "/" + subscribtionPath + "\"}", this);
+        _tcs = new();
+
+        var subscribtionPath = Path[0] == '/' ? Path.Remove(0, 1) : Path;
+        _mdsSubscription = Mds.Current.Subscribe(SchemePrefix, "{\"Uri\": \"" + MdsDevice.Serial + "/" + subscribtionPath + "\"}", this);
 
         return await _tcs.Task.ConfigureAwait(false);
     }
@@ -17,6 +19,8 @@ internal sealed partial class MdsSubscriptionCall : Java.Lang.Object, IMdsNotifi
     public void Unsubscribe()
     {
         _mdsSubscription?.Unsubscribe();
+        _mdsSubscription = null;
+        ((MdsDevice)MdsDevice).MdsSubscriptionCalls.Remove(this);
     }
 
     public void OnNotification(string? data)

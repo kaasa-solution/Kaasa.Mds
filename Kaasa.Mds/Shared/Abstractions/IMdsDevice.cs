@@ -64,5 +64,5 @@ public interface IMdsDevice
     /// <param name="notificationCallback">Callback for the data</param>
     /// <returns>Returns a <see cref="IMdsSubscription"/> on success</returns>
     /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback);
+    Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback, bool resubscribe = true);
 }
