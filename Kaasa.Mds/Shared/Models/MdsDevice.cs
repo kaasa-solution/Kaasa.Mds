@@ -21,8 +21,8 @@ internal sealed class MdsDevice : IMdsDevice
     public async Task DisconnectAsync() =>
         await new MdsConnectionCall(_mdsService).DisconnectAsync(this).ConfigureAwait(false);
 
-    public async Task<string?> GetAsync(string path) =>
-        await new MdsApiCall(Serial, path).GetAsync().ConfigureAwait(false);
+    public async Task<string?> GetAsync(string path, string prefix = "") =>
+        await new MdsApiCall(Serial, path).GetAsync(prefix).ConfigureAwait(false);
 
     public async Task<string?> PutAsync(string path, string contract) =>
         await new MdsApiCall(Serial, path).PutAsync(contract).ConfigureAwait(false);

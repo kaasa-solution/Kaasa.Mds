@@ -4,9 +4,9 @@ namespace Kaasa.Mds.Models;
 
 internal sealed partial class MdsApiCall : Java.Lang.Object, IMdsResponseListener
 {
-    public async Task<string?> GetAsync()
+    public async Task<string?> GetAsync(string prefix = "")
     {
-        Mds.Current.Get(SchemePrefix + _serial + _path, null, this);
+        Mds.Current.Get(SchemePrefix + prefix + _serial + _path, null, this);
 
         return await _tcs.Task.ConfigureAwait(false);
     }

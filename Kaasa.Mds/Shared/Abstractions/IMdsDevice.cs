@@ -27,9 +27,10 @@ public interface IMdsDevice
     /// Get a resource.
     /// </summary>
     /// <param name="path">Resources path</param>
+    /// <param name="prefix">Prefix to be inserted in the path before the serial number</param>
     /// <returns>Returns a json string (can be null or empty) on success</returns>
     /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task<string?> GetAsync(string path);
+    Task<string?> GetAsync(string path, string prefix = "");
 
     /// <summary>
     /// Create a resource.
@@ -62,6 +63,7 @@ public interface IMdsDevice
     /// </summary>
     /// <param name="path">Resource path</param>
     /// <param name="notificationCallback">Callback for the data</param>
+    /// <param name="resubscribe">Determines if the subscription should be automatically renewed when the sensor reconnects</param>
     /// <returns>Returns a <see cref="IMdsSubscription"/> on success</returns>
     /// <exception cref="MdsException">Thrown when an error occurs</exception>
     Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback, bool resubscribe = true);

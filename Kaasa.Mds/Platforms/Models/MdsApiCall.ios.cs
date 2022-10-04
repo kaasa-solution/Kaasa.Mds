@@ -4,9 +4,9 @@
 
 internal sealed partial class MdsApiCall
 {
-    public async Task<string?> GetAsync()
+    public async Task<string?> GetAsync(string prefix = "")
     {
-        Mds.Current.DoGet(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
+        Mds.Current.DoGet(SchemePrefix + prefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
                 _tcs.SetResult(new NSString(x.BodyData, NSStringEncoding.UTF8).ToString());
             } else {

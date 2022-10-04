@@ -2,7 +2,7 @@
 
 internal sealed partial class MdsApiCall
 {
-    public Task<string?> GetAsync()
+    public Task<string?> GetAsync(string prefix = "")
     {
         throw new NotImplementedException();
     }

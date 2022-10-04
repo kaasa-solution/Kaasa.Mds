@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kaasa.Mds</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>Xamarin and .NET MAUI wrapper around Movesense Mobile library.</title>
     <authors>Kaasa solution GmbH</authors>
     <projectUrl>https://github.com/kaasa-solution/Kaasa.Mds</projectUrl>
