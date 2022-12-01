@@ -38,4 +38,8 @@
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
 		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.1" />
 	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+	</ItemGroup>
 </Project>
