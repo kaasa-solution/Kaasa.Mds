@@ -1,6 +1,4 @@
-﻿using Java.Util;
-
-namespace Kaasa.Mds.Services;
+﻿namespace Kaasa.Mds.Services;
 
 public sealed partial class MdsService : IMdsService
 {
@@ -26,7 +24,7 @@ public sealed partial class MdsService : IMdsService
         if (device != null)
             return device;
 
-        return await new MdsConnectionCall(this).ConnectAsync(uuid).ConfigureAwait(false);
+        return await new MdsConnectionCall(_logger, this).ConnectAsync(uuid).ConfigureAwait(false);
     }
 
     public IMdsDevice? GetConnectedSensor(Guid uuid)

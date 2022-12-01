@@ -5,8 +5,9 @@ namespace Kaasa.Mds.Services;
 
 public sealed partial class MdsService : MDSConnectivityServiceDelegate
 {
-    public MdsService()
+    public MdsService(ILogger<MdsService> logger)
     {
+        _logger = logger;
         OnConnectionComplete += MdsServiceOnConnectionComplete;
 
         Mds.Current.DoSubscribe("MDS/ConnectedDevices", new NSDictionary(), _ => { }, (@event) => {

@@ -4,7 +4,7 @@ internal sealed class MdsDevice : IMdsDevice
 {
     private readonly MdsService _mdsService;
 
-    private readonly ILogger<MdsDevice> _logger;
+    private readonly ILogger<MdsService> _logger;
 
     internal List<MdsSubscriptionCall> MdsSubscriptionCalls { get; } = new();
 
@@ -12,7 +12,7 @@ internal sealed class MdsDevice : IMdsDevice
     public string Serial { get; }
     public string MacAddr { get; }
 
-    public MdsDevice(ILogger<MdsDevice> logger, MdsService mdsService, Guid uuid, string serial, string macAddr)
+    public MdsDevice(ILogger<MdsService> logger, MdsService mdsService, Guid uuid, string serial, string macAddr)
     {
         _logger = logger;
         _mdsService = mdsService;
@@ -24,7 +24,7 @@ internal sealed class MdsDevice : IMdsDevice
     public async Task DisconnectAsync()
     {
         _logger.LogDebug("Disconnecting device {0}.", UUID);
-        await new MdsConnectionCall(_mdsService).DisconnectAsync(this).ConfigureAwait(false);
+        await new MdsConnectionCall(_logger, _mdsService).DisconnectAsync(this).ConfigureAwait(false);
     }
 
     public async Task<string?> GetAsync(string path, string prefix = "") 

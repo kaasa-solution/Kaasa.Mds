@@ -4,8 +4,9 @@ namespace Kaasa.Mds.Services;
 
 public sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListener
 {
-    public MdsService()
+    public MdsService(ILogger<MdsService> logger)
     {
+        _logger = logger; 
         OnConnectionComplete += MdsServiceOnConnectionComplete;
     }
 

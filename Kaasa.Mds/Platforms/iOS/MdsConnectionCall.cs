@@ -19,7 +19,7 @@ internal sealed partial class MdsConnectionCall
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
 
-            var device = new MdsDevice(_mdsService, e.uuid, e.serial, macAddr ?? string.Empty);
+            var device = new MdsDevice(_logger, _mdsService, e.uuid, e.serial, macAddr ?? string.Empty);
 
             _mdsService.MdsDevices.Add(device);
             _tcs.SetResult(device);
