@@ -4,7 +4,7 @@ internal sealed class MdsDevice : IMdsDevice
 {
     private readonly MdsService _mdsService;
 
-    private readonly ILogger<MdsService> _logger;
+    private readonly ILogger<MdsDevice> _logger;
 
     internal List<MdsSubscriptionCall> MdsSubscriptionCalls { get; } = new();
 
@@ -12,7 +12,7 @@ internal sealed class MdsDevice : IMdsDevice
     public string Serial { get; }
     public string MacAddr { get; }
 
-    public MdsDevice(ILogger<MdsService> logger, MdsService mdsService, Guid uuid, string serial, string macAddr)
+    public MdsDevice(ILogger<MdsDevice> logger, MdsService mdsService, Guid uuid, string serial, string macAddr)
     {
         _logger = logger;
         _mdsService = mdsService;
@@ -23,7 +23,7 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task DisconnectAsync()
     {
-        _logger.LogDebug("Disconnecting device {0}.", UUID);
+        _logger.LogTrace("Disconnecting device {UUID}.", UUID);
         await new MdsConnectionCall(_logger, _mdsService).DisconnectAsync(this).ConfigureAwait(false);
     }
 
@@ -32,7 +32,7 @@ internal sealed class MdsDevice : IMdsDevice
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNull(prefix, nameof(prefix));
 
-        _logger.LogDebug("Trying to get data at path {0} from device {1}.", path, UUID);
+        _logger.LogTrace("Trying to get data at path {path} from device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).GetAsync(prefix).ConfigureAwait(false);
     }
@@ -42,7 +42,7 @@ internal sealed class MdsDevice : IMdsDevice
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNullOrWhiteSpace(contract, nameof(contract));
 
-        _logger.LogDebug("Trying to create data at path {0} on device {1}.", path, UUID);
+        _logger.LogTrace("Trying to create data at path {path} on device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).PutAsync(contract).ConfigureAwait(false);
     }
@@ -51,7 +51,7 @@ internal sealed class MdsDevice : IMdsDevice
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
 
-        _logger.LogDebug("Trying to update data at path {0} on device {1}.", path, UUID);
+        _logger.LogTrace("Trying to update data at path {path} on device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).PostAsync(contract).ConfigureAwait(false);
     }
@@ -60,7 +60,7 @@ internal sealed class MdsDevice : IMdsDevice
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
 
-        _logger.LogDebug("Trying to delete data at path {0} on device {1}.", path, UUID);
+        _logger.LogTrace("Trying to delete data at path {path} on device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).DeleteAsync().ConfigureAwait(false);
     }
@@ -76,7 +76,7 @@ internal sealed class MdsDevice : IMdsDevice
         if(resubscribe)
             MdsSubscriptionCalls.Add(subscriptionCall);
 
-        _logger.LogDebug("Add new subscription for data {0} for device {1}.", path, UUID);
+        _logger.LogTrace("Add new subscription for data {path} for device {UUID}.", path, UUID);
 
         return await subscriptionCall.SubscribeAsync().ConfigureAwait(false);
     }
