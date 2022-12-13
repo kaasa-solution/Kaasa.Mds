@@ -1,19 +1,25 @@
-﻿using System.Text.RegularExpressions;
+﻿using Foundation;
 
 namespace Kaasa.Mds.Models;
 
-internal sealed partial class MdsConnectionCall : Java.Lang.Object
+internal sealed partial class MdsConnectionCall
 {
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
-        var macAddr = Regex.Replace(uuid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17);
+        string? macAddr = null;
+
+        void onConnect(object? sender, string? _macAddr)
+        {
+            macAddr = _macAddr!;
+        }
 
         void onConnectionComplete(object? sender, (Guid uuid, string serial) e)
         {
+            _mdsService.OnConnect -= onConnect;
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
 
-            var device = new MdsDevice(_mdsService, e.uuid, e.serial, macAddr);
+            var device = new MdsDevice(_logger, _mdsService, e.uuid, e.serial, macAddr ?? string.Empty);
 
             _mdsService.MdsDevices.Add(device);
             _tcs.SetResult(device);
@@ -21,16 +27,18 @@ internal sealed partial class MdsConnectionCall : Java.Lang.Object
 
         void onError(object? sender, MdsException exception)
         {
+            _mdsService.OnConnect -= onConnect;
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
-
+            
             _tcs.SetException(exception);
         }
 
+        _mdsService.OnConnect += onConnect;
         _mdsService.OnConnectionComplete += onConnectionComplete;
         _mdsService.OnError += onError;
 
-        Mds.Current.Connect(macAddr, _mdsService);
+        Mds.Current.ConnectPeripheralWithUUID(new NSUuid(uuid.ToString()));
 
         return (await _tcs.Task.ConfigureAwait(false) as IMdsDevice)!;
     }
@@ -57,7 +65,7 @@ internal sealed partial class MdsConnectionCall : Java.Lang.Object
         _mdsService.OnDisconnect += onDisconnect;
         _mdsService.OnError += onError;
 
-        Mds.Current.Disconnect(mdsDevice.MacAddr);
+        Mds.Current.DisconnectPeripheralWithUUID(new NSUuid(mdsDevice.UUID.ToString()));
 
         await _tcs.Task.ConfigureAwait(false);
     }

@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
@@ -14,42 +13,32 @@
 		<PackageId>Kaasa.Mds</PackageId>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
 		<Authors>Kaasa solution GmbH</Authors>
-		<Title>Xamarin and .NET MAUI wrapper around Movesense Mobile library.</Title>
-		<Summary>Xamarin and .NET MAUI wrapper around Movesense Mobile library.</Summary>
-		<Description>Xamarin and .NET MAUI wrapper around Movesense Mobile library.</Description>
+		<Title>.NET MAUI wrapper around Movesense Mobile library.</Title>
+		<Summary>.NET MAUI wrapper around Movesense Mobile library.</Summary>
+		<Description>.NET MAUI wrapper around Movesense Mobile library.</Description>
 		<Copyright>© 2022 Kaasa solution GmbH. – All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/kaasa-solution/Kaasa.Mds</RepositoryUrl>
 		<Owners>Kaasa</Owners>
-		<OutputPath>build/NET</OutputPath>
-		<IntermediateOutputPath>build/NET</IntermediateOutputPath>
 		<PackageProjectUrl>https://github.com/kaasa-solution/Kaasa.Mds</PackageProjectUrl>
-		<PackageTags>xamarin, xamarin.forms, maui, .net, android, ios, plugin</PackageTags>
+		<PackageTags>maui, .net, android, ios, plugin</PackageTags>
 		<PackageReleaseNotes>https://github.com/kaasa-solution/Kaasa.Mds</PackageReleaseNotes>
 		<DefineConstants>$(DefineConstants);</DefineConstants>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackOnBuild>true</PackOnBuild>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
 	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-		<DebugType>full</DebugType>
-		<DebugSymbols>true</DebugSymbols>
+	<PropertyGroup>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)'=='Release' ">
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Include="Shared\**\*.cs" />
-		<Compile Include="GlobalUsings.cs" />
-	</ItemGroup>
-
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-android')) ">
-		<Compile Include="**\*.android.cs" />
-		<Compile Include="**\*.android.*.cs" />
 		<PackageReference Include="Kaasa.Mds.Android" Version="1.1.0" />
 	</ItemGroup>
-
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
-		<Compile Include="**\*.ios.cs" />
-		<Compile Include="**\*.ios.*.cs" />
 		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
 	</ItemGroup>
 </Project>
