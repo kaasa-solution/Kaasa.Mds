@@ -1,10 +1,7 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Kaasa.Mds.Models;
+﻿namespace Kaasa.Mds.Models;
 
 internal sealed partial class MdsConnectionCall : Java.Lang.Object
 {
-
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
         var macAddr = Regex.Replace(uuid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17);

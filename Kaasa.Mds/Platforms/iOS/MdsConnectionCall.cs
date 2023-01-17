@@ -30,7 +30,7 @@ internal sealed partial class MdsConnectionCall
             _mdsService.OnConnect -= onConnect;
             _mdsService.OnConnectionComplete -= onConnectionComplete;
             _mdsService.OnError -= onError;
-            
+
             _tcs.SetException(exception);
         }
 

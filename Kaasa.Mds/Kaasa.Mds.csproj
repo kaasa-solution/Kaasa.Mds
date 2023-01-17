@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
+		<TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>1.0.4</Version>
-		<AssemblyVersion>1.0.4</AssemblyVersion>
-		<AssemblyFileVersion>1.0.4</AssemblyFileVersion>
+		<Version>1.1.0</Version>
+		<AssemblyVersion>1.1.0</AssemblyVersion>
+		<AssemblyFileVersion>1.1.0</AssemblyFileVersion>
 		<AssemblyName>Kaasa.Mds</AssemblyName>
 		<RootNamespace>Kaasa.Mds</RootNamespace>
 		<PackageId>Kaasa.Mds</PackageId>
@@ -16,7 +16,7 @@
 		<Title>.NET MAUI wrapper around Movesense Mobile library.</Title>
 		<Summary>.NET MAUI wrapper around Movesense Mobile library.</Summary>
 		<Description>.NET MAUI wrapper around Movesense Mobile library.</Description>
-		<Copyright>© 2022 Kaasa solution GmbH. – All rights reserved.</Copyright>
+		<Copyright>© 2023 Kaasa solution GmbH. – All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/kaasa-solution/Kaasa.Mds</RepositoryUrl>
 		<Owners>Kaasa</Owners>
 		<PackageProjectUrl>https://github.com/kaasa-solution/Kaasa.Mds</PackageProjectUrl>
@@ -24,21 +24,25 @@
 		<PackageReleaseNotes>https://github.com/kaasa-solution/Kaasa.Mds</PackageReleaseNotes>
 		<DefineConstants>$(DefineConstants);</DefineConstants>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackOnBuild>true</PackOnBuild>
-		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
+		<PackOnBuild>true</PackOnBuild>
+		<UseMaui>true</UseMaui>
 	</PropertyGroup>
+
 	<PropertyGroup>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 	</PropertyGroup>
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-android')) ">
-		<PackageReference Include="Kaasa.Mds.Android" Version="1.1.0" />
-	</ItemGroup>
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
-		<PackageReference Include="Kaasa.Mds.iOS" Version="1.0.1" />
-	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net7.0-android')) ">
+		<PackageReference Include="Kaasa.Mds.Android" Version="1.2.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net7.0-ios')) ">
+		<PackageReference Include="Kaasa.Mds.iOS" Version="1.1.0" />
 	</ItemGroup>
 </Project>

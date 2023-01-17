@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-﻿namespace Kaasa.Mds.Models;
+namespace Kaasa.Mds.Models;
 
 internal sealed partial class MdsApiCall
 {

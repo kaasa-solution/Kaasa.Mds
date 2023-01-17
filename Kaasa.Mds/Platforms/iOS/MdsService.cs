@@ -1,5 +1,5 @@
 ﻿using Foundation;
-﻿using Kaasa.Mds.iOS;
+using Kaasa.Mds.iOS;
 
 namespace Kaasa.Mds.Services;
 

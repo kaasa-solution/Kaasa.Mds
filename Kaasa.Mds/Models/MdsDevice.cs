@@ -27,8 +27,8 @@ internal sealed class MdsDevice : IMdsDevice
         await new MdsConnectionCall(_logger, _mdsService).DisconnectAsync(this).ConfigureAwait(false);
     }
 
-    public async Task<string?> GetAsync(string path, string prefix = "") 
-    { 
+    public async Task<string?> GetAsync(string path, string prefix = "")
+    {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNull(prefix, nameof(prefix));
 
@@ -70,10 +70,10 @@ internal sealed class MdsDevice : IMdsDevice
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNull(notificationCallback, nameof(notificationCallback));
         Guard.IsNotNull(resubscribe, nameof(resubscribe));
-        
+
         var subscriptionCall = new MdsSubscriptionCall(this, path, notificationCallback);
 
-        if(resubscribe)
+        if (resubscribe)
             MdsSubscriptionCalls.Add(subscriptionCall);
 
         _logger.LogTrace("Add new subscription for data {path} for device {UUID}.", path, UUID);

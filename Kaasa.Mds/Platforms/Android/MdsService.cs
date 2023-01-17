@@ -7,7 +7,7 @@ public sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListene
     public MdsService(ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
-        _logger = loggerFactory.CreateLogger<MdsService>(); 
+        _logger = loggerFactory.CreateLogger<MdsService>();
         OnConnectionComplete += MdsServiceOnConnectionComplete;
     }
 
