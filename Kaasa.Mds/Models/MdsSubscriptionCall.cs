@@ -3,6 +3,7 @@
 internal sealed partial class MdsSubscriptionCall : IMdsSubscription
 {
     private const string SchemePrefix = "suunto://MDS/EventListener";
+
     private readonly Action<string>? _notificationCallback;
     private TaskCompletionSource<IMdsSubscription>? _tcs;
 

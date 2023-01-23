@@ -2,9 +2,12 @@
 
 internal sealed partial class MdsConnectionCall : Java.Lang.Object
 {
+    [GeneratedRegex(".{2}")]
+    private static partial Regex UUIDRegex();
+
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
-        var macAddr = Regex.Replace(uuid.ToString().Split("-").Last().ToUpper(), ".{2}", "$0:").Remove(17);
+        var macAddr = UUIDRegex().Replace(uuid.ToString().Split("-").Last().ToUpper(), "$0:").Remove(17);
 
         void onConnectionComplete(object? sender, (Guid uuid, string serial) e)
         {

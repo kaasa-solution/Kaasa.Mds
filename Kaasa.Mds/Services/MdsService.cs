@@ -3,8 +3,8 @@
 public sealed partial class MdsService : IMdsService
 {
     private readonly ILoggerFactory _loggerFactory;
-
-    private readonly ILogger<MdsService> _logger;
+    private readonly ILogger<MdsService> _serviceLogger;
+    private readonly ILogger<MdsDevice> _deviceLogger;
     internal List<MdsDevice> MdsDevices { get; } = new();
 
     public event EventHandler<string>? OnConnect;
@@ -21,12 +21,12 @@ public sealed partial class MdsService : IMdsService
 
         var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
 
-        _logger.LogTrace("Trying to connect device {uuid}.", uuid);
-
         if (device != null)
             return device;
 
-        return await new MdsConnectionCall(_loggerFactory.CreateLogger<MdsDevice>(), this).ConnectAsync(uuid).ConfigureAwait(false);
+        _serviceLogger.LogTrace("Trying to connect device {uuid}.", uuid);
+
+        return await new MdsConnectionCall(_deviceLogger, this).ConnectAsync(uuid).ConfigureAwait(false);
     }
 
     public IMdsDevice? GetConnectedSensor(Guid uuid)
@@ -48,12 +48,12 @@ public sealed partial class MdsService : IMdsService
         Guard.IsNotNull(e.uuid, nameof(e.uuid));
         Guard.IsNotNullOrWhiteSpace(e.serial, nameof(e.serial));
 
-        _logger.LogTrace("Trying to establish subscriptions for device {e.uuid}.", e.uuid);
-
         var device = MdsDevices.FirstOrDefault(x => x.Serial == e.serial);
 
         if (device is null)
             return;
+
+        _serviceLogger.LogTrace("Trying to establish subscriptions for device {e.uuid}.", e.uuid);
 
         device.MdsSubscriptionCalls.ForEach(async x => await x.SubscribeAsync().ConfigureAwait(false));
     }

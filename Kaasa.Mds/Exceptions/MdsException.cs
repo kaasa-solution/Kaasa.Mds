@@ -2,7 +2,7 @@
 
 public sealed class MdsException : Exception
 {
-    public MdsException(string message) : base(message)
+    internal MdsException(string message) : base(message)
     {
     }
 }

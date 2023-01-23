@@ -8,7 +8,8 @@ public sealed partial class MdsService : MDSConnectivityServiceDelegate
     public MdsService(ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;
-        _logger = loggerFactory.CreateLogger<MdsService>();
+        _serviceLogger = loggerFactory.CreateLogger<MdsService>();
+        _deviceLogger = _loggerFactory.CreateLogger<MdsDevice>();
         OnConnectionComplete += MdsServiceOnConnectionComplete;
 
         Mds.Current.DoSubscribe("MDS/ConnectedDevices", new NSDictionary(), _ => { }, (@event) => {

@@ -2,9 +2,8 @@
 
 internal sealed class MdsDevice : IMdsDevice
 {
-    private readonly MdsService _mdsService;
-
     private readonly ILogger<MdsDevice> _logger;
+    private readonly MdsService _mdsService;
 
     internal List<MdsSubscriptionCall> MdsSubscriptionCalls { get; } = new();
 
@@ -27,7 +26,7 @@ internal sealed class MdsDevice : IMdsDevice
         await new MdsConnectionCall(_logger, _mdsService).DisconnectAsync(this).ConfigureAwait(false);
     }
 
-    public async Task<string?> GetAsync(string path, string prefix = "")
+    public async Task<string> GetAsync(string path, string prefix = "")
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNull(prefix, nameof(prefix));
@@ -37,7 +36,7 @@ internal sealed class MdsDevice : IMdsDevice
         return await new MdsApiCall(Serial, path).GetAsync(prefix).ConfigureAwait(false);
     }
 
-    public async Task<string?> PutAsync(string path, string contract)
+    public async Task<string> PutAsync(string path, string contract)
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
         Guard.IsNotNullOrWhiteSpace(contract, nameof(contract));
@@ -47,7 +46,7 @@ internal sealed class MdsDevice : IMdsDevice
         return await new MdsApiCall(Serial, path).PutAsync(contract).ConfigureAwait(false);
     }
 
-    public async Task<string?> PostAsync(string path, string? contract = null)
+    public async Task<string> PostAsync(string path, string? contract = null)
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
 
@@ -56,7 +55,7 @@ internal sealed class MdsDevice : IMdsDevice
         return await new MdsApiCall(Serial, path).PostAsync(contract).ConfigureAwait(false);
     }
 
-    public async Task<string?> DeleteAsync(string path)
+    public async Task<string> DeleteAsync(string path)
     {
         Guard.IsNotNullOrWhiteSpace(path, nameof(path));
 

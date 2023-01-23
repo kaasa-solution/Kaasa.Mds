@@ -4,7 +4,7 @@ namespace Kaasa.Mds.Models;
 
 internal sealed partial class MdsApiCall
 {
-    public async Task<string?> GetAsync(string prefix = "")
+    public async Task<string> GetAsync(string prefix = "")
     {
         Mds.Current.DoGet(SchemePrefix + prefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {
@@ -17,7 +17,7 @@ internal sealed partial class MdsApiCall
         return await _tcs.Task.ConfigureAwait(false);
     }
 
-    public async Task<string?> PutAsync(string contract)
+    public async Task<string> PutAsync(string contract)
     {
         var dictionary = (NSDictionary)NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
 
@@ -36,7 +36,7 @@ internal sealed partial class MdsApiCall
         return await _tcs.Task.ConfigureAwait(false);
     }
 
-    public async Task<string?> PostAsync(string? contract = null)
+    public async Task<string> PostAsync(string? contract = null)
     {
         NSDictionary? dictionary;
         NSError? error = null;
@@ -62,7 +62,7 @@ internal sealed partial class MdsApiCall
         return await _tcs.Task.ConfigureAwait(false);
     }
 
-    public async Task<string?> DeleteAsync()
+    public async Task<string> DeleteAsync()
     {
         Mds.Current.DoDelete(SchemePrefix + _serial + _path, new NSDictionary(), (x) => {
             if (x.StatusCode == 200) {

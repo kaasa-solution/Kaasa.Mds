@@ -3,9 +3,10 @@
 internal sealed partial class MdsApiCall
 {
     private const string SchemePrefix = "suunto://";
-    private readonly TaskCompletionSource<string?> _tcs = new();
+
     private readonly string _serial;
     private readonly string _path;
+    private readonly TaskCompletionSource<string> _tcs = new();
 
     public MdsApiCall(string serial, string path)
     {
