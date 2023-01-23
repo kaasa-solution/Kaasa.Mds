@@ -82,6 +82,8 @@ public sealed partial class ViewModel
             var mdsDevice = await _mdsService.ConnectAsync(ID);
             .. 
             await mdsDevice.DisconnectAsync();
+        } catch(Exception ex) {
+            // Handle error
         }
     }
 }
