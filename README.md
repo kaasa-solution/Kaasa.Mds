@@ -10,7 +10,9 @@ The project is composed of 3 parts.
 - Kaasa.Mds.iOS: The iOS binding project for the native library.
 
 Kaasa.Mds.Android can be found here: https://github.com/kaasa-solution/Kaasa.Mds.Android
+
 Kaasa.Mds.iOS can be found here: https://github.com/kaasa-solution/Kaasa.Mds.iOS
+
 The movesense project can be found here: https://bitbucket.org/movesense/movesense-device-lib
 
 ## Installation
@@ -62,6 +64,25 @@ public sealed partial class ViewModel
     public ViewModel(IMdsService mdsService)
     {
         _mdsService = mdsService;
+    }
+}
+```
+
+To connect a sensor, the device id of the sensor, which was found with the Plugin.Ble plugin for example, must be passed to the IMdsService. 
+This returns an IMdsDevice if the connection was successful.
+
+```csharp
+public sealed partial class ViewModel
+{
+    private readonly IMdsService _mdsService;
+
+    public async Task ConnectCommand()
+    {
+        try {
+            var mdsDevice = await _mdsService.ConnectAsync(ID);
+            .. 
+            await mdsDevice.DisconnectAsync();
+        }
     }
 }
 ```
