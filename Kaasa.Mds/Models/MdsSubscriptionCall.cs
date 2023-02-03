@@ -13,7 +13,7 @@ internal sealed partial class MdsSubscriptionCall : IMdsSubscription
     public MdsSubscriptionCall(IMdsDevice mdsDevice, string path, Action<string> notificationCallback)
     {
         MdsDevice = mdsDevice;
-        Path = path;
+        Path = path.StartsWith("/") ? path : "/" + path; ;
         _notificationCallback = notificationCallback;
     }
 }

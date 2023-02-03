@@ -10,8 +10,7 @@ internal sealed partial class MdsSubscriptionCall : Java.Lang.Object, IMdsNotifi
     {
         _tcs = new();
 
-        var subscribtionPath = Path[0] == '/' ? Path.Remove(0, 1) : Path;
-        _mdsSubscription = Mds.Current.Subscribe(SchemePrefix, "{\"Uri\": \"" + MdsDevice.Serial + "/" + subscribtionPath + "\"}", this);
+        _mdsSubscription = Mds.Current.Subscribe(SchemePrefix, "{\"Uri\": \"" + MdsDevice.Serial + "/" + Path + "\"}", this);
 
         return await _tcs.Task.ConfigureAwait(false);
     }

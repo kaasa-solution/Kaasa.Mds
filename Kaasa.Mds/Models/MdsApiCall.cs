@@ -11,6 +11,6 @@ internal sealed partial class MdsApiCall
     public MdsApiCall(string serial, string path)
     {
         _serial = serial;
-        _path = path;
+        _path = path.StartsWith("/") ? path : "/" + path;
     }
 }
