@@ -68,7 +68,7 @@ public sealed partial class ViewModel
 }
 ```
 
-To connect a sensor, the device id of the sensor, which was found with the Plugin.Ble plugin for example, must be passed to the IMdsService. 
+To connect a sensor, the device id of the sensor, which was found with the Plugin.Ble plugin for example, must be passed to the IMdsService.
 This returns an IMdsDevice if the connection was successful.
 
 ```csharp
@@ -80,7 +80,7 @@ public sealed partial class ViewModel
     {
         try {
             var mdsDevice = await _mdsService.ConnectAsync(ID);
-            .. 
+            ..
             await mdsDevice.DisconnectAsync();
         } catch(Exception ex) {
             // Handle error
@@ -102,7 +102,7 @@ public static IMdsDeviceExtensions
 }
 ```
 
-Finding Bluetooth devices is not the responsibility of the Mds plugin and must be implemented additionally. 
+Finding Bluetooth devices is not the responsibility of the Mds plugin and must be implemented additionally.
 See e.g. https://github.com/dotnet-bluetooth-le/dotnet-bluetooth-le.
 
 The permissions required are the same as for the Ble scan itself (see Plugin.Ble). It is up to the user of the plugin to request these and insert them correctly into e.g. the Android manifest.
