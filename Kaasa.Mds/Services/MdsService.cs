@@ -17,7 +17,7 @@ public sealed partial class MdsService : IMdsService
 
     public async Task<IMdsDevice> ConnectAsync(Guid uuid)
     {
-        Guard.IsNotNull(uuid, nameof(uuid));
+        ArgumentNullException.ThrowIfNull(uuid, nameof(uuid));
 
         var device = MdsDevices.FirstOrDefault(x => x.UUID == uuid);
 
@@ -31,22 +31,22 @@ public sealed partial class MdsService : IMdsService
 
     public IMdsDevice? GetConnectedSensor(Guid uuid)
     {
-        Guard.IsNotNull(uuid, nameof(uuid));
+        ArgumentNullException.ThrowIfNull(uuid, nameof(uuid));
 
         return MdsDevices.FirstOrDefault(x => x.UUID == uuid);
     }
 
     public IMdsDevice? GetConnectedSensor(string serial)
     {
-        Guard.IsNotNullOrWhiteSpace(serial, nameof(serial));
+        ArgumentException.ThrowIfNullOrEmpty(serial, nameof(serial));
 
         return MdsDevices.FirstOrDefault(x => x.Serial == serial);
     }
 
     private void MdsServiceOnConnectionComplete(object? sender, (Guid uuid, string serial) e)
     {
-        Guard.IsNotNull(e.uuid, nameof(e.uuid));
-        Guard.IsNotNullOrWhiteSpace(e.serial, nameof(e.serial));
+        ArgumentNullException.ThrowIfNull(e.uuid, nameof(e.uuid));
+        ArgumentException.ThrowIfNullOrEmpty(e.serial, nameof(e.serial));
 
         var device = MdsDevices.FirstOrDefault(x => x.Serial == e.serial);
 

@@ -28,8 +28,8 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task<string> GetAsync(string path, string prefix = "")
     {
-        Guard.IsNotNullOrWhiteSpace(path, nameof(path));
-        Guard.IsNotNull(prefix, nameof(prefix));
+        ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+        ArgumentNullException.ThrowIfNull(prefix, nameof(prefix));
 
         _logger.LogTrace("Trying to get data at path {path} from device {UUID}.", path, UUID);
 
@@ -38,8 +38,8 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task<string> PutAsync(string path, string contract)
     {
-        Guard.IsNotNullOrWhiteSpace(path, nameof(path));
-        Guard.IsNotNullOrWhiteSpace(contract, nameof(contract));
+        ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+        ArgumentException.ThrowIfNullOrEmpty(contract, nameof(contract));
 
         _logger.LogTrace("Trying to create data at path {path} on device {UUID}.", path, UUID);
 
@@ -48,7 +48,7 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task<string> PostAsync(string path, string? contract = null)
     {
-        Guard.IsNotNullOrWhiteSpace(path, nameof(path));
+        ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
 
         _logger.LogTrace("Trying to update data at path {path} on device {UUID}.", path, UUID);
 
@@ -57,8 +57,8 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task<string> DeleteAsync(string path)
     {
-        Guard.IsNotNullOrWhiteSpace(path, nameof(path));
-
+        ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+     
         _logger.LogTrace("Trying to delete data at path {path} on device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).DeleteAsync().ConfigureAwait(false);
@@ -66,9 +66,9 @@ internal sealed class MdsDevice : IMdsDevice
 
     public async Task<IMdsSubscription> SubscribeAsync(string path, Action<string> notificationCallback, bool resubscribe = true)
     {
-        Guard.IsNotNullOrWhiteSpace(path, nameof(path));
-        Guard.IsNotNull(notificationCallback, nameof(notificationCallback));
-        Guard.IsNotNull(resubscribe, nameof(resubscribe));
+        ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+        ArgumentNullException.ThrowIfNull(notificationCallback, nameof(notificationCallback));
+        ArgumentNullException.ThrowIfNull(resubscribe, nameof(resubscribe));
 
         var subscriptionCall = new MdsSubscriptionCall(this, path, notificationCallback);
 
