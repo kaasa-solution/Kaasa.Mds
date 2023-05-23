@@ -2,7 +2,7 @@
 
 namespace Kaasa.Mds.Services;
 
-public sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListener
+internal sealed partial class MdsService : Java.Lang.Object, IMdsConnectionListener
 {
     public MdsService(ILoggerFactory loggerFactory)
     {

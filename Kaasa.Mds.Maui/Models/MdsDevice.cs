@@ -58,7 +58,7 @@ internal sealed class MdsDevice : IMdsDevice
     public async Task<string> DeleteAsync(string path)
     {
         ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
-     
+
         _logger.LogTrace("Trying to delete data at path {path} on device {UUID}.", path, UUID);
 
         return await new MdsApiCall(Serial, path).DeleteAsync().ConfigureAwait(false);

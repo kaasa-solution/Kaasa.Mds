@@ -3,7 +3,7 @@ using Kaasa.Mds.iOS;
 
 namespace Kaasa.Mds.Services;
 
-public sealed partial class MdsService : MDSConnectivityServiceDelegate
+internal sealed partial class MdsService : MDSConnectivityServiceDelegate
 {
     public MdsService(ILoggerFactory loggerFactory)
     {

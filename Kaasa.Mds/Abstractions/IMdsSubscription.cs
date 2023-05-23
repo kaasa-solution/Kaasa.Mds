@@ -1,5 +1,8 @@
 ﻿namespace Kaasa.Mds.Abstractions;
 
+/// <summary>
+/// Represents a Mds subscription.
+/// </summary>
 public interface IMdsSubscription
 {
     /// <summary>

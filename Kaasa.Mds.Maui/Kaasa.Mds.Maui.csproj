@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -8,15 +8,15 @@
 		<Version>2.0.0</Version>
 		<AssemblyVersion>2.0.0</AssemblyVersion>
 		<AssemblyFileVersion>2.0.0</AssemblyFileVersion>
-		<PackageId>Kaasa.Mds</PackageId>
-		<AssemblyName>Kaasa.Mds</AssemblyName>
-		<RootNamespace>Kaasa.Mds</RootNamespace>
+		<PackageId>Kaasa.Mds.Maui</PackageId>
+		<AssemblyName>Kaasa.Mds.Maui</AssemblyName>
+		<RootNamespace>Kaasa.Mds.Maui</RootNamespace>
 		<Owners>Kaasa</Owners>
 		<Authors>Kaasa solution GmbH</Authors>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
-		<Title>.NET library for Movesense.</Title>
-		<Summary>.NET library for Movesense.</Summary>
-		<Description>.NET library for Movesense.</Description>
+		<Title>.NET MAUI implementation of Kaasa.Mds.</Title>
+		<Summary>.NET MAUI implementation of Kaasa.Mds.</Summary>
+		<Description>.NET MAUI implementation of Kaasa.Mds.</Description>
 		<Copyright>© 2023 Kaasa solution GmbH. – All rights reserved.</Copyright>
 		<PackageTags>plugin, .net, movesense</PackageTags>
 		<RepositoryUrl>https://github.com/kaasa-solution/Kaasa.Mds</RepositoryUrl>
@@ -29,10 +29,24 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="" />
 		<None Include="..\LICENSE.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Kaasa.Mds\Kaasa.Mds.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net7.0-android')) ">
+		<PackageReference Include="Kaasa.Mds.Android" Version="1.3.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net7.0-ios')) ">
+		<PackageReference Include="Kaasa.Mds.iOS" Version="1.2.1" />
 	</ItemGroup>
 </Project>

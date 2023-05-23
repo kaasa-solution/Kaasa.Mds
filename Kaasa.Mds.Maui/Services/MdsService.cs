@@ -1,6 +1,6 @@
 ﻿namespace Kaasa.Mds.Services;
 
-public sealed partial class MdsService : IMdsService
+internal sealed partial class MdsService : IMdsService
 {
     private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<MdsService> _serviceLogger;

@@ -1,5 +1,8 @@
 ﻿namespace Kaasa.Mds.Abstractions;
 
+/// <summary>
+/// Represents a Mds device.
+/// </summary>
 public interface IMdsDevice
 {
     /// <summary>
