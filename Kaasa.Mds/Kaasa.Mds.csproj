@@ -5,9 +5,9 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NeutralLanguage>en</NeutralLanguage>
-		<Version>2.0.0</Version>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<AssemblyFileVersion>2.0.0</AssemblyFileVersion>
+		<Version>2.1.0</Version>
+		<AssemblyVersion>2.1.0</AssemblyVersion>
+		<AssemblyFileVersion>2.1.0</AssemblyFileVersion>
 		<PackageId>Kaasa.Mds</PackageId>
 		<AssemblyName>Kaasa.Mds</AssemblyName>
 		<RootNamespace>Kaasa.Mds</RootNamespace>
