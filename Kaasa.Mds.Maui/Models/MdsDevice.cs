@@ -26,14 +26,14 @@ internal sealed class MdsDevice : IMdsDevice
         await new MdsConnectionCall(_logger, _mdsService).DisconnectAsync(this).ConfigureAwait(false);
     }
 
-    public async Task<string> GetAsync(string path, string prefix = "")
+    public async Task<string> GetAsync(string path, string prefix = "", string? contract = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
         ArgumentNullException.ThrowIfNull(prefix, nameof(prefix));
 
         _logger.LogTrace("Trying to get data at path {path} from device {UUID}.", path, UUID);
 
-        return await new MdsApiCall(Serial, path).GetAsync(prefix).ConfigureAwait(false);
+        return await new MdsApiCall(Serial, path).GetAsync(prefix, contract).ConfigureAwait(false);
     }
 
     public async Task<string> PutAsync(string path, string contract)

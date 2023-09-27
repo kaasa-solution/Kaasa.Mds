@@ -31,9 +31,10 @@ public interface IMdsDevice
     /// </summary>
     /// <param name="path">Resources path</param>
     /// <param name="prefix">Prefix to be inserted in the path before the serial number</param>
+    /// <param name="contract">Outgoing data as json (if necessary)</param>
     /// <returns>Returns a json string on success</returns>
     /// <exception cref="MdsException">Thrown when an error occurs</exception>
-    Task<string> GetAsync(string path, string prefix = "");
+    Task<string> GetAsync(string path, string prefix = "", string? contract = null);
 
     /// <summary>
     /// Create a resource.
