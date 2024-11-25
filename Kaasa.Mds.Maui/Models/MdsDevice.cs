@@ -39,7 +39,6 @@ internal sealed class MdsDevice : IMdsDevice
     public async Task<string> PutAsync(string path, string contract)
     {
         ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
-        ArgumentException.ThrowIfNullOrEmpty(contract, nameof(contract));
 
         _logger.LogTrace("Trying to create data at path {path} on device {UUID}.", path, UUID);
 

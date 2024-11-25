@@ -5,9 +5,9 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NeutralLanguage>en</NeutralLanguage>
-		<Version>2.2.1</Version>
-		<AssemblyVersion>2.2.1</AssemblyVersion>
-		<AssemblyFileVersion>2.2.1</AssemblyFileVersion>
+		<Version>2.2.2</Version>
+		<AssemblyVersion>2.2.2</AssemblyVersion>
+		<AssemblyFileVersion>2.2.2</AssemblyFileVersion>
 		<PackageId>Kaasa.Mds.Maui</PackageId>
 		<AssemblyName>Kaasa.Mds.Maui</AssemblyName>
 		<RootNamespace>Kaasa.Mds.Maui</RootNamespace>
