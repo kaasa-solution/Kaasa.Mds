@@ -32,7 +32,14 @@ internal sealed partial class MdsApiCall
 
     public async Task<string> PutAsync(string contract)
     {
-        var dictionary = (NSDictionary) NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
+        NSDictionary dictionary = new();
+        NSError returnedError = new();
+
+        if(contract.Length != 0)
+        {
+            dictionary = (NSDictionary) NSJsonSerialization.Deserialize(NSData.FromString(contract), NSJsonReadingOptions.MutableContainers, out NSError error);
+            returnedError = error;
+        }
 
         if (dictionary != null) {
             Mds.Current.DoPut(SchemePrefix + _serial + _path, dictionary, (x) => {
@@ -43,7 +50,7 @@ internal sealed partial class MdsApiCall
                 }
             });
         } else {
-            _tcs.SetException(new MdsException(error.Description));
+            _tcs.SetException(new MdsException(returnedError.Description));
         }
 
         return await _tcs.Task.ConfigureAwait(false);
